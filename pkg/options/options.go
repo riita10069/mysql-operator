@@ -72,6 +72,12 @@ type Options struct {
 
 	// OrchestratorConcurrentReconciles sets the orchestrator controller workers
 	OrchestratorConcurrentReconciles int32
+
+	// AllowCrossNamespaceUser allow creating users resources in clusters that are not in the same namespace.
+	AllowCrossNamespaceUsers bool
+
+	// AllowCrossNamespaceDatabase allow creating users resources in clusters that are not in the same namespace.
+	AllowCrossNamespaceDatabases bool
 }
 
 type pullpolicy corev1.PullPolicy
@@ -147,6 +153,13 @@ func (o *Options) AddFlags(fs *pflag.FlagSet) {
 
 	fs.Int32Var(&o.OrchestratorConcurrentReconciles, "orchestrator-concurrent-reconciles", 10,
 		"Set the number of workers for orchestrator reconciler.")
+
+	fs.BoolVar(&o.AllowCrossNamespaceUsers, "allow-cross-namespace-user", false,
+		"Allow the operator create users in clusters from other namespaces. Enabling this may be a security issue")
+
+	fs.BoolVar(&o.AllowCrossNamespaceDatabases, "allow-cross-namespace-database", false,
+		"Allow the operator create database in clusters from other namespaces. Enabling this may be a security issue")
+
 }
 
 var instance *Options
